@@ -1,0 +1,124 @@
+{
+  "_comment": "Sunshine Configuration Template for Lab KVM",
+  "_comment2": "Copy this to ~/.config/sunshine/sunshine.conf",
+  "_comment3": "Optimized for stability and low latency in lab environment",
+
+  "sunshine_name": "Lab-KVM-PC",
+
+  "min_log_level": "info",
+
+  "channels": 1,
+
+  "pkey": "/home/andrea/.config/sunshine/credentials/cakey.pem",
+  "cert": "/home/andrea/.config/sunshine/credentials/cacert.pem",
+
+  "external_ip": "",
+  "port": 47989,
+  "upnp": "off",
+
+  "output_name": 0,
+  "fps": [30, 60, 120],
+  "resolutions": [
+    {
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "width": 1280,
+      "height": 720
+    }
+  ],
+
+  "encoder": "nvenc",
+  "adapter_name": "",
+  "capture": "nvfbc",
+
+  "nvenc_realtime_hags": 0,
+  "nvenc_latency_over_power": 1,
+  "nvenc_preset": 1,
+  "nvenc_vbv_increase": 0,
+
+  "min_threads": 2,
+
+  "hevc_mode": 0,
+  "av1_mode": 0,
+
+  "sw_preset": "superfast",
+  "sw_tune": "zerolatency",
+
+  "min_fps_factor": 1,
+
+  "channels": 2,
+  "audio_sink": "",
+
+  "virtual_sink": "sunshine-audio-sink",
+  "audio_buffer_size": 1024,
+
+  "origin_web_ui_allowed": "pc",
+
+  "username": "andrea",
+  "password": "",
+
+  "upnp": "off",
+
+  "global_prep_cmd": [],
+  "global_undo_cmd": [],
+
+  "commands": [
+    {
+      "name": "Desktop",
+      "output": "",
+      "cmd": "",
+      "exclude-global-prep-cmd": "false",
+      "elevated": "false",
+      "auto-detach": "true",
+      "image-path": ""
+    }
+  ],
+
+  "file_apps": "/home/andrea/.config/sunshine/apps.json",
+
+  "_performance_notes": [
+    "This configuration prioritizes stability and low latency",
+    "FPS options include 60 and 120 for Pi 4 Model B high performance",
+    "4K resolution available for Pi 4 (recommended for 4GB+ models)",
+    "Encoder explicitly set to 'nvenc' for NVIDIA hardware acceleration",
+    "nvenc_realtime_hags=0: Prevents GPU freezes when VRAM is near capacity",
+    "nvenc_latency_over_power=1: Requests high GPU power mode for stability",
+    "nvenc_preset=1: Fastest encoding, lowest latency (quality/compression tradeoff)",
+    "min_threads=2: Uses multiple CPU threads to reduce GPU dependency",
+    "capture=nvfbc: NVIDIA Frame Buffer Capture - fastest method for NVIDIA GPUs",
+    "Software encoding uses 'superfast' preset with 'zerolatency' tune",
+    "UPnP disabled for security in lab environment",
+    "Virtual audio sink created for audio streaming"
+  ],
+
+  "_security_notes": [
+    "Set a strong password after installation",
+    "Keep certificates secure in credentials directory",
+    "Restrict web UI access to LAN only",
+    "Review firewall rules in ../pc-side/install-sunshine.sh"
+  ],
+
+  "_troubleshooting": [
+    "If video stutters: Pi 4 should handle 1080p60 easily, check network",
+    "For 4K streaming: Ensure using Ethernet or 5GHz WiFi",
+    "If audio issues: Check pulseaudio/pipewire configuration",
+    "If connection fails: Verify firewall allows ports 47984-47990 and 48010",
+    "For logs: journalctl -u sunshine -f"
+  ],
+
+  "_gpu_conflict_prevention": [
+    "GPU Resource Management: Settings optimized to prevent conflicts with other GPU-intensive apps",
+    "Known conflicts: Electron apps (VSCode, Discord, Claude Desktop) may compete for NVENC",
+    "nvenc_realtime_hags=0: Lowers GPU scheduler priority from realtime to high",
+    "This prevents driver freezes when multiple apps access GPU simultaneously",
+    "If system freezes occur: Check journalctl for NVENC/NvFBC errors",
+    "Emergency: Close GPU-intensive apps or restart Sunshine service",
+    "See ../recovery/troubleshooting-card.md for GPU conflict procedures"
+  ]
+}

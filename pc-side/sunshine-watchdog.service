@@ -1,0 +1,47 @@
+[Unit]
+Description=Sunshine Watchdog - Monitors and Restarts Sunshine Service
+Documentation=https://github.com/yourusername/wireless-kvm-lab
+After=sunshine.service network-online.target
+Requires=sunshine.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+
+# Run the watchdog script
+ExecStart=/usr/local/bin/sunshine-watchdog.sh
+
+# Restart policy for the watchdog itself
+Restart=always
+RestartSec=10
+StartLimitBurst=5
+StartLimitIntervalSec=300
+
+# Resource limits (watchdog should be lightweight)
+MemoryMax=256M
+CPUQuota=50%
+TasksMax=64
+
+# Priority (lower than Sunshine itself)
+Nice=5
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sunshine-watchdog
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Working directory
+WorkingDirectory=/var/log
+
+# Graceful shutdown
+TimeoutStopSec=10
+KillMode=mixed
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target

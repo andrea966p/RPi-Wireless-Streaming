@@ -1,0 +1,58 @@
+[Unit]
+Description=Moonlight KVM Streaming Client
+Documentation=https://github.com/moonlight-stream/moonlight-docs
+After=network-online.target multi-user.target graphical.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=skimlab
+Group=skimlab
+SupplementaryGroups=video render input tty
+
+# Start Moonlight connection script
+ExecStart=/usr/local/bin/start-moonlight.sh
+
+# Restart policy - critical for lab reliability
+Restart=always
+RestartSec=10
+StartLimitBurst=5
+
+# Process priority - ensure smooth streaming
+Nice=-5
+IOSchedulingClass=realtime
+IOSchedulingPriority=2
+
+# Resource limits (Pi 4 has plenty of resources)
+MemoryMax=1G
+MemoryHigh=800M
+CPUQuota=300%
+TasksMax=512
+
+# Environment variables for DRM/KMS mode (headless/direct rendering)
+Environment=HOME=/home/skimlab
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=QT_QPA_PLATFORM=eglfs
+
+# Working directory
+WorkingDirectory=/home/skimlab
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=moonlight-kvm
+
+# TTY for direct console access
+TTYPath=/dev/tty1
+StandardInput=tty-force
+
+# Watchdog (the script handles its own health checks)
+WatchdogSec=120
+
+# Graceful shutdown
+TimeoutStopSec=10
+KillMode=mixed
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=graphical.target

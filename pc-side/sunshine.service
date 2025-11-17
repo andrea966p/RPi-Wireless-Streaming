@@ -1,0 +1,62 @@
+[Unit]
+Description=Sunshine Streaming Server for Lab KVM
+Documentation=https://docs.lizardbyte.dev/projects/sunshine/en/latest/
+After=network-online.target graphical.target
+Wants=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=10
+
+[Service]
+Type=simple
+User=andrea
+Group=andrea
+
+# Start Sunshine with explicit configuration directory
+ExecStart=/usr/bin/sunshine /home/andrea/.config/sunshine/sunshine.conf
+
+# Restart policy - critical for lab stability
+Restart=always
+RestartSec=3
+
+# Process priority
+Nice=-10
+IOSchedulingClass=realtime
+IOSchedulingPriority=0
+
+# Resource limits (adjust based on your system)
+MemoryMax=2G
+MemoryHigh=1.5G
+CPUQuota=200%
+TasksMax=512
+
+# Security hardening (adjust as needed)
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Allow access to input devices for KVM functionality
+SupplementaryGroups=input video render
+
+# Environment variables
+Environment=DISPLAY=:1
+Environment=XAUTHORITY=/home/andrea/.Xauthority
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=HOME=/home/andrea
+
+# Working directory
+WorkingDirectory=/home/andrea
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sunshine
+
+# Note: WatchdogSec removed - Sunshine doesn't send sd_notify keepalive signals
+# This prevents systemd from killing the process after 60 seconds of normal operation
+
+# Graceful shutdown
+TimeoutStopSec=15
+KillMode=mixed
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=graphical.target
