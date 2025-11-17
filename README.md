@@ -38,41 +38,8 @@ This system allows lab users to control an Ubuntu PC remotely through a Raspberr
 
 ## System Architecture
 
-```text
-┌──────────────────────────────────────────────────────────────┐
-│                      Lab WiFi Network                        │
-│                      192.168.0.0/24                          │
-│                                                              │
-│   ┌────────────────────────┐                                 │
-│   │   Ubuntu PC            │                                 │
-│   │   ┌──────────────┐     │                                 │
-│   │   │  Sunshine    │     │  Video/Audio/Input Streaming    │
-│   │   │  Server      │     │  ─────────────────────────────► │
-│   │   └──────────────┘     │                                 │
-│   │   ┌──────────────┐     │                                 │
-│   │   │  Watchdog    │     │                                 │
-│   │   └──────────────┘     │                                 │
-│   │   192.168.0.56         │                                 │
-│   │   andrea               │                                 │
-│   └────────────────────────┘                                 │
-│                                                              │
-│   ┌────────────────────────┐                                 │
-│   │   Pi 4 Model B         │                                 │
-│   │   ┌──────────────┐     │                                 │
-│   │   │  Moonlight   │     │                                 │
-│   │   │  Client      │◄────┼────────────────────────────────┘
-│   │   └──────────────┘     │
-│   │   ┌──────────────┐     │
-│   │   │  Auto-Retry  │     │
-│   │   └──────────────┘     │
-│   │   192.168.0.47         │
-│   │   pi4hdmi              │
-│   └────────────────────────┘
-│
-│   Connected to: Monitor, Keyboard, Mouse
-│                 (Controls the Ubuntu PC)
-└──────────────────────────────────────────────────────────────┘
-```
+<img width="1024" height="1024" alt="Gemini_Generated_Image_stlrolstlrolstlr" src="https://github.com/user-attachments/assets/480277e0-ad57-4785-8691-febfb41d4311" />
+
 
 ### Component Roles
 
